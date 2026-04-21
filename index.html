@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOSSIER: Personality Assessment</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: "#0f172a",
+              paper: "#eae6df",
+              gridline: "#cbd5e1",
+              rust: "#ea580c",
+              royal: "#2563eb",
+            },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body
+    class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8"
+  >
+    <div
+      class="container mx-auto max-w-4xl flex flex-col items-center justify-center relative z-10"
+    >
+      <div
+        class="w-full flex justify-between items-center mb-6 px-4 bg-ink text-paper border-4 border-ink py-2"
+      >
+        <span class="ui-text font-bold tracking-widest"
+          >>> DEPARTEMEN ANALISIS TINGKAH LAKU</span
+        >
+        <span class="ui-text font-bold">KODE: RS-01</span>
+      </div>
+
+      <div
+        id="start-screen"
+        class="neo-box p-8 md:p-12 text-center w-full bg-white relative"
+      >
+        <div
+          class="absolute top-0 left-0 w-full h-2 bg-rust border-b-4 border-ink"
+        ></div>
+
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-bold text-ink mb-6 border-b-4 border-ink pb-4 font-serif uppercase tracking-tight mt-4"
+        >
+          EVALUASI PSIKOMETRI
+        </h1>
+        <p
+          class="text-lg sm:text-xl text-ink mb-10 font-serif leading-relaxed bg-paper p-4 border-2 border-ink border-dashed"
+        >
+          Instrumen ini dirancang untuk memetakan arsitektur kognitif Anda.
+          Terdiri dari 30 pertanyaan pengujian untuk mengekstraksi tipe
+          kepribadian, gaya resolusi, dan matriks karir secara absolut.
+        </p>
+        <button
+          id="start-quiz-btn"
+          class="neo-btn btn-royal text-lg sm:text-xl ui-text w-full sm:w-auto px-10"
+        >
+          >> INISIASI PROTOKOL <<
+        </button>
+      </div>
+
+      <div id="quiz-screen" class="w-full hidden">
+        <div class="neo-box p-6 md:p-10 bg-white relative">
+          <div
+            class="absolute top-0 left-0 w-full h-2 bg-royal border-b-4 border-ink"
+          ></div>
+
+          <div class="mb-10 mt-4">
+            <div
+              class="flex justify-between mb-2 ui-text text-sm md:text-base font-bold bg-ink text-paper px-2 py-1"
+            >
+              <span
+                >>> INDEKS PENGUJIAN: <span id="question-number"></span> /
+                30</span
+              >
+              <span id="progress-percent">>> 0% <<</span>
+            </div>
+            <div class="neo-progress-bg">
+              <div
+                id="progress-bar"
+                class="neo-progress-fill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <h2
+            id="question-text"
+            class="text-2xl md:text-3xl font-bold mb-10 text-center min-h-[100px] font-serif leading-snug border-2 border-ink p-6 bg-paper"
+          ></h2>
+
+          <div class="grid grid-cols-1 gap-4">
+            <button
+              id="option-a"
+              class="neo-btn ui-text text-left w-full min-h-[70px] p-4 text-sm md:text-base leading-relaxed items-start justify-start text-ink bg-white hover:bg-paper"
+            >
+              <span></span>
+            </button>
+            <button
+              id="option-b"
+              class="neo-btn ui-text text-left w-full min-h-[70px] p-4 text-sm md:text-base leading-relaxed items-start justify-start text-ink bg-white hover:bg-paper"
+            >
+              <span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="result-screen" class="w-full hidden mt-4">
+        <div class="neo-box p-6 md:p-10 bg-white relative">
+          <div
+            class="absolute top-0 left-0 w-full h-2 bg-rust border-b-4 border-ink"
+          ></div>
+
+          <div class="text-center border-b-4 border-ink pb-8 mb-8 mt-4">
+            <p
+              class="ui-text text-lg text-ink font-bold mb-4 bg-gridline inline-block px-4 py-1 border-2 border-ink"
+            >
+              >> MATRIKS HASIL EVALUASI <<
+            </p>
+            <h2
+              id="result-type"
+              class="text-6xl md:text-8xl font-bold text-rust mb-2 ui-text tracking-widest drop-shadow-[4px_4px_0px_#0f172a]"
+            ></h2>
+            <h3
+              id="result-title"
+              class="text-2xl md:text-3xl font-bold text-ink font-serif uppercase tracking-widest bg-paper inline-block px-6 py-2 border-4 border-ink"
+            ></h3>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <div
+              class="bg-paper border-4 border-ink p-4 flex flex-col justify-center items-center relative shadow-[4px_4px_0px_#2563eb]"
+            >
+              <span
+                class="absolute top-0 left-0 bg-ink text-paper ui-text text-xs px-3 py-1 font-bold"
+                >>> PEMETAAN PARAMETER</span
+              >
+              <canvas id="result-chart" class="mt-8"></canvas>
+            </div>
+
+            <div
+              class="flex flex-col border-4 border-ink bg-white shadow-[4px_4px_0px_#0f172a]"
+            >
+              <div
+                class="bg-ink text-paper ui-text text-xs px-3 py-1 font-bold"
+              >
+                >> BERKAS LAMPIRAN
+              </div>
+              <div id="accordion-container" class="flex-grow"></div>
+            </div>
+          </div>
+
+          <div class="border-t-4 border-ink pt-8">
+            <div class="flex flex-wrap justify-center items-center gap-4 mb-8">
+              <button
+                onclick="shareTo('twitter')"
+                class="neo-btn ui-text text-sm bg-white"
+              >
+                >> TRANSMISI X <<
+              </button>
+              <button
+                onclick="shareTo('facebook')"
+                class="neo-btn ui-text text-sm bg-white"
+              >
+                >> TRANSMISI FB <<
+              </button>
+              <button
+                id="copy-link-btn"
+                class="neo-btn ui-text text-sm bg-white"
+              >
+                >> DUPLIKASI TAUTAN <<
+              </button>
+            </div>
+            <div class="text-center">
+              <button
+                id="retake-quiz-btn"
+                class="neo-btn btn-rust ui-text text-lg px-8"
+              >
+                >> JALANKAN ULANG EVALUASI <<
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="notification"
+        class="fixed bottom-5 right-5 bg-ink text-paper ui-text text-sm px-6 py-3 hidden z-50 border-4 border-rust shadow-[4px_4px_0px_#0f172a]"
+      ></div>
+
+      <div class="w-full text-center mt-6">
+        <span
+          class="ui-text font-bold text-ink bg-paper border-2 border-ink px-4 py-2 text-xs"
+        >
+          AUTHORIZED CREATOR: RAHMAD SAINS
+        </span>
+      </div>
+    </div>
+
+    <div
+      id="trait-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center p-4"
+    >
+      <div class="absolute inset-0 bg-ink bg-opacity-95"></div>
+      <div
+        class="relative neo-box w-full max-w-lg bg-white p-0 text-left shadow-none transition-none"
+      >
+        <div
+          class="flex items-start justify-between border-b-4 border-ink p-4 bg-royal text-paper"
+        >
+          <h3 class="ui-text text-xl font-bold" id="modal-title"></h3>
+          <button
+            type="button"
+            id="modal-close-btn"
+            class="neo-btn bg-white text-ink px-3 py-1 text-sm border-2"
+          >
+            X
+          </button>
+        </div>
+        <div class="p-6 bg-paper">
+          <p
+            class="font-serif text-xl text-ink font-bold leading-relaxed border-l-4 border-rust pl-4"
+            id="modal-content"
+          ></p>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
